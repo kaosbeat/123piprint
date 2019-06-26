@@ -78,9 +78,7 @@ gletcher = {
 # print(nltk.pos_tag(["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]))
 
 
-def testsentence():
-    sentence = ["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]
-    sentence = ["hello", "dear", "musician"]
+def testsentence(sentence):
     fetchandstorewords(sentence, confirmedwordlist)
     taggedsentence = nltk.pos_tag(sentence)
     # print(taggedsentence)
@@ -93,11 +91,49 @@ def testsentence():
         newsentence.append(random.choice(wordlist))
     print("printing new sentence")
     print (newsentence)
+    return newsentence
 
 
-# grammar = tracery.Grammar(rules)
-# grammar.add_modifiers(base_english)
-# print(grammar.flatten("#origin#"))  # prints, e.g., "Hello, world!"
+def convertSentenceToTraceobj(tracename, sentence, traceobj):
+    trace = ""
+    for idx, word in enumerate(sentence):
+        #split modifiers
+        mods = None
+        if "." in word:
+            mods = word.split(".")[1:len(word.split("."))]
+            print(mods)
+            word = word.split(".")[0]
+        #try assocs
+        try: 
+            associations[word]
+        except:
+            fetchandstorewords([word], confirmedwordlist)
 
+        if (associations[word] != None):
+            traceobj[word] = []
+            for w in associations[word]:
+                traceobj[word].append(w)
+
+            if mods != None:
+                print (mods)
+                for mod in mods:
+                    word = word + "." + mod
+            word = "#" +  word + "#"
+        trace = trace + word + " "
+    traceobj[tracename] = [trace]
+    print (traceobj)
+    return traceobj 
+
+def makeSense(traceobj,tracename):
+    grammar = tracery.Grammar(traceobj)
+    grammar.add_modifiers(base_english)
+    print(grammar.flatten("#"+tracename+"#"))  
 
 #gletcherobjects
+
+
+sentence = ["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]
+sentence = ["hello", "dear", "musician"]
+sentence = ["feed","me","weird","stuff"]
+sentence = ["I", "whish", "I", "had", "duck", "feet"]
+sentence = ["word.s.capitalize", "come.ed", "easy"]

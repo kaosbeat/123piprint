@@ -21,9 +21,22 @@ songtext.songtitle()
 assoc.initAssoc()
 #######
 print("##################################")
-for x in range(0,10):
-	songtext.testsentence()
+# sentence = songtext.sentence
+# for x in range(0,10):
+# 	sentence = songtext.testsentence(sentence)
+
 # get_message
+traceme = {}
+tracename = "test"
+traceme = songtext.convertSentenceToTraceobj(tracename, songtext.sentence, traceme)
+print (traceme)
+for x in range(0,10):
+	songtext.makeSense(traceme,tracename)
+
+
+
+
+# assoc.fetchandstorewords(["nourish"], assoc.confirmedwordlist)
 
 while True:
 	pass

@@ -158,11 +158,11 @@ def fetchandstorewords(wordlist, confirmedwordlist):
 				confirmedwordlist.append(word)
 
 		else:
-			# print("found "+ word + " on disk" )
+			print("found "+ word + " on disk" )
 			associations[word] = file2Object(filename)
 			confirmedwordlist.append(word)
-			# print ("unpickled")
-			# print (associations[word])
+			print ("unpickled")
+			print (associations[word])
 			# print (confirmedwordlist)
 		
 	
@@ -200,6 +200,9 @@ def getTypeFromAssoc(word,wordtype):
 		return wordlist
 	else:
 		return [word]
+
+
+
 
 ####
 # init assoc files needed
