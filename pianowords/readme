@@ -1,0 +1,9 @@
+#install using pip3
+rt-midi
+requests
+escpos
+
+
+#permissions
+Bus 001 Device 005: ID 067b:2305 Prolific Technology, Inc. PL2305 Parallel Port
+
