@@ -1,12 +1,11 @@
 import sys
 sys.path.append('lib')
-
-
 from filestuff import *
 import random
 import math
 import os
 import midiparser as mp
+import musicconcepts as mc
 import songtext
 import assoc
 
@@ -25,13 +24,6 @@ print("##################################")
 # for x in range(0,10):
 # 	sentence = songtext.testsentence(sentence)
 
-# get_message
-traceme = {}
-tracename = "test"
-traceme = songtext.convertSentenceToTraceobj(tracename, songtext.sentence, traceme)
-print (traceme)
-for x in range(0,10):
-	songtext.makeSense(traceme,tracename)
 
 
 
@@ -39,4 +31,6 @@ for x in range(0,10):
 # assoc.fetchandstorewords(["nourish"], assoc.confirmedwordlist)
 
 while True:
+	# check if we need to end a song and start endprinter
+	mc.checkSongEnd()
 	pass

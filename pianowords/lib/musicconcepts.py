@@ -1,7 +1,10 @@
 import datetime
 import songtext
+# import printer
+import speak
 miditimesongstart = datetime.datetime.utcnow()
 miditimelastnote = datetime.datetime.utcnow()
+miditimecurrentnote = datetime.datetime.utcnow()
 msgs = []
 seqNotes =  []
 seqNotesOn =  []
@@ -13,7 +16,8 @@ seqDeltaOff = []
 style = "basic"
 level = ""
 model = {}
-
+playstate = False
+cursor = 0
 
 
 # def TimestampMillisec64(c):
@@ -25,7 +29,6 @@ model = {}
 
 
 def resetSeqs():
-	global miditimesongstart
 	global msgs
 	global seqNotes
 	global seqNotesOn
@@ -34,7 +37,7 @@ def resetSeqs():
 	global seqVelocityOff
 	global seqDeltaOn
 	global seqDeltaOff
-	miditimesongstart = datetime.datetime.utcnow()
+	global playstate
 	songtext.songnumber = songtext.songnumber + 1
 	seqNotes =  []
 	seqNotesOn =  []
@@ -57,7 +60,7 @@ def addToSeqs (note, velocity, msgtype, delta):
 		seqNotesOff.append(note)
 		seqVelocityOff.append(velocity)
 		seqDeltaOff.append(delta)
-	# print (seqNotes)
+	# print (seqNotes) 
 
 	
 def calcStyle():
@@ -81,29 +84,77 @@ def buildWord(note, velocity):
 		print(note,velocity)
 
 
+def checkSongEnd():
+	global miditimesongstart
+	global miditimelastnote
+	global miditimecurrentnote
+	global playstate
+	if playstate:
+		now = datetime.datetime.utcnow()
+		# print((miditimecurrentnote - miditimelastnote).total_seconds())
+		if ((now - miditimelastnote).total_seconds() > 3):
+			playstate = False
+			# printer.closePrinter()
+			print("stopping song, the silence was too long")
+			print("linefeed")
+			songtext.getnewsongtext()
+		if ((now - miditimesongstart).total_seconds() > 10):
+			playstate = False
+			# printer.closePrinter()
+			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
+			print("linefeed")
+			songtext.getnewsongtext()
+
 
 def dostuff(msg):
 	global miditimesongstart
 	global miditimelastnote
-	miditimecurrentnote = datetime.datetime.utcnow() 
-	# print((miditimecurrentnote - miditimelastnote).microseconds)
-		#first check if we need to restartsong
-	# if ((miditimecurrentnote - miditimelastnote).microseconds > 1000000):
-	# 	resetSeqs()
-	# 	print("restarting song, the silence was too long")
-
-	if ((miditimecurrentnote - miditimesongstart).total_seconds() > 5):
-		resetSeqs()
-		print("restarting song, the song has been playing too long", (miditimecurrentnote - miditimesongstart).microseconds)
-				
-		
-
-	# timestamp = TimestampMillisec64()
-	# print(timestamp)
+	global miditimecurrentnote
+	global playstate
+	now = datetime.datetime.utcnow()
+	if (msg.type == 'note_on'):
+		if playstate:
+			miditimelastnote = miditimecurrentnote
+		else: 
+			playstate = True
+			# printer.openPrinter()
+			resetSeqs()
+			miditimelastnote = now
+			miditimesongstart = now
+		miditimecurrentnote = now
+		printwordonline()
 	try:
-		addToSeqs(msg.note, msg.velocity, msg.type, (datetime.datetime.utcnow() - miditimesongstart))
-		# print (TimestampMillisec64())
+		addToSeqs(msg.note, msg.velocity, msg.type, (now - miditimesongstart))
 	except AttributeError:
 		pass
-
 	# print("callback called")
+	
+	# printer.PrintWord("hello from the piano: " + str(msg.note))
+
+def printwordonline():
+	global cursor
+	try:
+		a = songtext.currentsongtext.pop(0)
+		cursor = cursor + len(a) + 1
+		if (cursor > 80):
+			cursor = 0
+			# print('linefeed')
+			print(a + " ")
+			# printer.NextLine()
+			# printer.PrintWord(a + " ")
+			speak.sayword(a)
+		else: 
+			print(a + " ")
+			# printer.PrintWord(a + " ")
+			speak.sayword(a)
+
+	except IndexError:
+		print("linefeed")
+		# printer.NextLine()
+		cursor = 0
+		songtext.getnewsongtext()
+		a = songtext.currentsongtext.pop(0)
+		# print(a + " ")
+		# printer.PrintWord(a + " ")
+		speak.sayword(a)
+		cursor = cursor + len(a) + 1

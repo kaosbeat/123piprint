@@ -1,11 +1,12 @@
 import tracery
+import songtext
 from assoc import *
 import random
 from tracery.modifiers import base_english
 import datetime
 from weatherstuff import getweather 
 import filestuff
-
+currentsongtext = []
 #init objects
 # # feed = ['feed']
 # filestuff.object2File(feed, 'tracery/feed.trace')
@@ -35,45 +36,20 @@ def songtitle():
     songdate = datetime.datetime.now().strftime("%d %B, %Y, %H:%M")
     return ( "This is song " + str(songnumber) + " performed at " + songlocation  + " on this " + getweather()["temp"] + " day" )
 
-
-
-
-
-
-absurdrules = {
-    'origin': '#hello.capitalize#, #location#!',
-    'hello': ['hello', 'greetings', 'howdy', 'hey'],
-    'location': ['world', 'solar system', 'galaxy', 'universe']
-}
-
-repetetiverules = {
-    'origin': '#hello.capitalize#, #location#!',
-    'hello': ['hello', 'greetings', 'howdy', 'hey'],
-    'location': ['world', 'solar system', 'galaxy', 'universe']
-}
-
-
-
-
 def updateobject(obj, objtype):
     global confirmedwordlist
     #get assocs
     fetchandstorewords(obj, confirmedwordlist)
-    print(obj)
+    # print(obj)
     newobj = {}
     for w in obj:
         newobj = newobj + getTypeFromAssoc(w,objtype)
-    print (newobj)
+    # print (newobj)
 
     
 
 loadObjectsFromDisk()
 
-gletcher = {
-    'melting' : '#feed.capitalize# me #weird# #music#',
-    'feed': feed,
-    'sentence' :["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]
-}
 
 # print(nltk.pos_tag(["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]))
 
@@ -101,7 +77,7 @@ def convertSentenceToTraceobj(tracename, sentence, traceobj):
         mods = None
         if "." in word:
             mods = word.split(".")[1:len(word.split("."))]
-            print(mods)
+            # print(mods)
             word = word.split(".")[0]
         #try assocs
         try: 
@@ -115,25 +91,43 @@ def convertSentenceToTraceobj(tracename, sentence, traceobj):
                 traceobj[word].append(w)
 
             if mods != None:
-                print (mods)
+                # print (mods)
                 for mod in mods:
                     word = word + "." + mod
             word = "#" +  word + "#"
         trace = trace + word + " "
     traceobj[tracename] = [trace]
-    print (traceobj)
+    # print (traceobj)
     return traceobj 
 
 def makeSense(traceobj,tracename):
     grammar = tracery.Grammar(traceobj)
     grammar.add_modifiers(base_english)
-    print(grammar.flatten("#"+tracename+"#"))  
+    return grammar.flatten("#"+tracename+"#")
 
+
+
+def getnewsongtext():
+    global sentences
+    global sentence
+    global currentsongtext
+
+    sentence = sentences[random.randint(0,len(sentences)-1)]
+    traceme = {}
+    tracename = "test"
+    traceme = convertSentenceToTraceobj(tracename, sentence, traceme)
+    currentsong = makeSense(traceme,tracename)
+    print (currentsong)
+    print (len(currentsong.split(" ")))
+    currentsongtext = currentsong.split(" ")
 #gletcherobjects
 
-
-sentence = ["feed","me","weird","music","and","I","will","grow","a","beard","filled","with","riddles","and","it","will","flow","and","grow","like","a","waterfall","grows","from","a","glacier","that","melts","like","it's","2018"]
-sentence = ["hello", "dear", "musician"]
-sentence = ["feed","me","weird","stuff"]
-sentence = ["I", "whish", "I", "had", "duck", "feet"]
-sentence = ["word.s.capitalize", "come.ed", "easy"]
+sentence = []
+sentences = [
+             ["feed","me","weird","music","and","I","will","grow","beard.a","fill.ed","with","riddle.s","and","it","will","flow","and","grow","like","waterfall.a","grows","from","glacier.a","that","melts","like","it's","2018"],
+             ["hello", "dear", "musician"],
+             ["feed","me","weird","stuff"],
+             ["I", "whish", "I", "have.ed", "duck", "feet"],
+             ["word.s.capitalize", "come.ed", "easy"],
+             ["Emancipate", "yourselve.s", "from", "mental", "slavery", "None", "but",  "ourselve.s", "can",  "free",  "our" , "minds"]
+            ]
