@@ -1,6 +1,7 @@
 import requests
 import pickle
 import random
+# import string
 import re
 import nltk
 from authkeys import mashapekey
@@ -37,10 +38,10 @@ def getAssociations(word,associations):
 	  }
 	)
 	response = r.json()
-	print(response['result_code'])
+	# print(response['result_code'])
 	if (response['result_code'] == '200'):
-		print(response)
-		print(response['associations_scored'])
+		# print(response)
+		# print(response['associations_scored'])
 		associations.update({word: response['associations_scored']})
 		return True
 
@@ -71,31 +72,34 @@ def uniq(input):
 def fetchandstorewords(wordlist, confirmedwordlist):
 	wordlist = uniq(wordlist)
 	for word in wordlist:
-		word = re.sub('[!@#$"`~%^&*()_+-}]{[|?/.,><;:\']', '', word)
+		word = word.split(".")[0]
+		word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)
+		word = word.lower()
 		# word.translate(None, '!@#$"`~%^&*()_+-}]{[|?/.,><;:\'')
 		# check associations
+		word = cleanFilename(word)
 		filename = 'objects/' + word + '.assoc'
 		# print(filename)
 		if not os.path.isfile(filename):
-			print("going online")
+			# print("going online")
 			if not getAssociations(word,associations):
-				print ("not an easy word :" + word)
+				# print ("not an easy word :" + word)
 				associations[word] = None
-				print("writing None object to disk")
+				# print("writing None object to disk")
 				object2File((associations[word]), filename)
 			else:
 				#prepend list with baseword
-				print("writing  " + word + " to disk")
+				# print("writing  " + word + " to disk")
 				object2File((associations[word]), filename)
 				# if (word == checkIfNounOnDiskOrGet(word)):
 				confirmedwordlist.append(word)
 
 		else:
-			print("found "+ word + " on disk" )
+			# print("found "+ word + " on disk" )
 			associations[word] = file2Object(filename)
 			confirmedwordlist.append(word)
-			print ("unpickled")
-			print (associations[word])
+			# print ("unpickled")
+			# print (associations[word])
 			# print (confirmedwordlist)
 		
 	
@@ -111,7 +115,10 @@ def fetchandstorewords(wordlist, confirmedwordlist):
 def getTypeFromAssoc(word,wordtype):
 	# typelist = []
 	wordlist = []
-	taggedlist2 = []
+	taggedlist2 = []		
+	word = word.split(".")[0]
+	word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)
+	word = word.lower()
 	# print (associations[word])
 	if (associations[word] != None):
 		for w in associations[word]:
@@ -121,7 +128,8 @@ def getTypeFromAssoc(word,wordtype):
 		#different approach, single POS tag vs "sentencetagging"
 		# print (taggedlist)
 	else:
-		print("we have a None object")
+		# print("we have a None object")
+		pass
 	#### our wordlist
 	# print (taggedlist2)
 

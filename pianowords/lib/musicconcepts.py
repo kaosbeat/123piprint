@@ -1,5 +1,8 @@
 import datetime
+import time
 import songtext
+import fluidsynth
+
 # import printer
 import speak
 miditimesongstart = datetime.datetime.utcnow()
@@ -19,6 +22,25 @@ model = {}
 playstate = False
 cursor = 0
 
+#fluidsynthstuff
+fs = fluidsynth.Synth()
+fs.start()
+sfid = fs.sfload("lib/generalsound.sf2")
+fs.program_select(0, sfid, 0, 0)
+
+fs.noteon(0, 60, 30)
+fs.noteon(0, 67, 30)
+fs.noteon(0, 76, 30)
+
+time.sleep(1.0)
+
+fs.noteoff(0, 60)
+fs.noteoff(0, 67)
+fs.noteoff(0, 76)
+
+time.sleep(1.0)
+
+# fs.delete()
 
 # def TimestampMillisec64(c):
 # 	# print(datetime.datetime.utcnow().microsecond)
@@ -113,6 +135,7 @@ def dostuff(msg):
 	global playstate
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
+		fs.noteon(0, msg.note, msg.velocity)
 		if playstate:
 			miditimelastnote = miditimecurrentnote
 		else: 
@@ -123,6 +146,8 @@ def dostuff(msg):
 			miditimesongstart = now
 		miditimecurrentnote = now
 		printwordonline()
+	if (msg.type == 'note_off'):
+		fs.noteon(0, msg.note)
 	try:
 		addToSeqs(msg.note, msg.velocity, msg.type, (now - miditimesongstart))
 	except AttributeError:

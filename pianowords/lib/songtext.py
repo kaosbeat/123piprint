@@ -7,6 +7,7 @@ import datetime
 from weatherstuff import getweather 
 import filestuff
 currentsongtext = []
+import string
 #init objects
 # # feed = ['feed']
 # filestuff.object2File(feed, 'tracery/feed.trace')
@@ -57,7 +58,7 @@ loadObjectsFromDisk()
 def testsentence(sentence):
     fetchandstorewords(sentence, confirmedwordlist)
     taggedsentence = nltk.pos_tag(sentence)
-    # print(taggedsentence)
+    print(taggedsentence)
     # print(taggedsentence)
     newsentence = []
     for word in taggedsentence:
@@ -65,16 +66,18 @@ def testsentence(sentence):
         # print("printing new words")
         # print(wordlist)
         newsentence.append(random.choice(wordlist))
-    print("printing new sentence")
-    print (newsentence)
+    # print("printing new sentence")
+    # print (newsentence)
     return newsentence
 
 
 def convertSentenceToTraceobj(tracename, sentence, traceobj):
     trace = ""
+    print(traceobj)
     for idx, word in enumerate(sentence):
         #split modifiers
         mods = None
+        word = word.lower()
         if "." in word:
             mods = word.split(".")[1:len(word.split("."))]
             # print(mods)
@@ -124,10 +127,12 @@ def getnewsongtext():
 
 sentence = []
 sentences = [
-             ["feed","me","weird","music","and","I","will","grow","beard.a","fill.ed","with","riddle.s","and","it","will","flow","and","grow","like","waterfall.a","grows","from","glacier.a","that","melts","like","it's","2018"],
+             ["feed","me","weird","music","and","I","will","grow","beard.a","fill.ed","with","riddle.s","and","it","will","flow","and","grow","like","waterfall.a","grows","from","glacier.a","that","melts","like","it", "is","2019"],
              ["hello", "dear", "musician"],
              ["feed","me","weird","stuff"],
              ["I", "whish", "I", "have.ed", "duck", "feet"],
              ["word.s.capitalize", "come.ed", "easy"],
              ["Emancipate", "yourselve.s", "from", "mental", "slavery", "None", "but",  "ourselve.s", "can",  "free",  "our" , "minds"]
             ]
+
+

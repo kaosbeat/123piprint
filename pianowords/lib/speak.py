@@ -25,7 +25,7 @@ import speake3
 
 engine = speake3.Speake() # Initialize the speake engine
 engine.set('voice', 'en')
-engine.set('speed', '107')
+engine.set('speed', '250')
 engine.set('pitch', '99')
 # engine.say("Hello world!") #String to be spoken
 
@@ -33,7 +33,7 @@ engine.set('pitch', '99')
 
 def sayword(word):
     global engine
-    engine.say(word)
+    # engine.say(word)
     # engine.runAndWait()
     engine.talkback()
 

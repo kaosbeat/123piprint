@@ -1,4 +1,5 @@
 from subprocess import call
+from slugify import slugify
 import pickle
 import os
 
@@ -42,3 +43,16 @@ def loadObjectsDirectory2wordlist(directory,wordlist):
 			continue
 		else:
 			continue
+
+def cleanFilename(filename):
+	#https://stackoverflow.com/questions/295135/turn-a-string-into-a-valid-filename
+	# filename = 'Very / Unsafe / file\nname hähä \n\r .txt'
+	clean_basename = slugify(os.path.splitext(filename)[0])
+	clean_extension = slugify(os.path.splitext(filename)[1][1:])
+	if clean_extension:
+		clean_filename = '{}.{}'.format(clean_basename, clean_extension)
+	elif clean_basename:
+		clean_filename = clean_basename
+	else:
+		clean_filename = 'none' # only unclean characters
+	return clean_filename
