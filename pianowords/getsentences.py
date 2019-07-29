@@ -19,8 +19,9 @@ assoc.initAssoc()
 #######
 # print("##################################")
 sentence = songtext.sentences[0]
-for x in range(0,10):
-    sentence = songtext.testsentence(sentence)
+for x in range(0,100):
+    # sentence = songtext.testsentence(sentence)
+    songtext.getnewsongtext()
     # print(sentence)
 
 

@@ -10,13 +10,15 @@ import songtext
 import assoc
 
 
+
+
 # fix for http://stackoverflow.com/questions/31137552/unicodeencodeerror-ascii-codec-cant-encode-character-at-special-name
 
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
 
 
-songtext.songtitle()
+
 assoc.initAssoc()
 #######
 print("##################################")
@@ -25,10 +27,22 @@ print("##################################")
 # 	sentence = songtext.testsentence(sentence)
 
 
+path, dirs, files = next(os.walk("./objects"))
+file_count = len(files)
 
-
+def sayhello():
+	print("Hello, how are you")
+	print("sure is" + songtext.getweather()["temp"]  + "at" + songtext.songlocation )
+	print("I'm sorry I only speak English")
+	print("But I'm not listening to you anyway")
+	print("My settings are:")
+	print("maximum songlength: " +str(mc.maxsonglength))
+	print("maximum silence in song: " + str(mc.maxsilencetime))
+	print("so far I learned "+ str(file_count)+ " words")
 
 # assoc.fetchandstorewords(["nourish"], assoc.confirmedwordlist)
+
+sayhello()
 
 while True:
 	# check if we need to end a song and start endprinter

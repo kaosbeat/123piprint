@@ -1,7 +1,6 @@
 import datetime
 import time
 import songtext
-import fluidsynth
 
 # import printer
 import speak
@@ -21,26 +20,9 @@ level = ""
 model = {}
 playstate = False
 cursor = 0
+maxsilencetime = 3
+maxsonglength = 10
 
-#fluidsynthstuff
-fs = fluidsynth.Synth()
-fs.start()
-sfid = fs.sfload("lib/generalsound.sf2")
-fs.program_select(0, sfid, 0, 0)
-
-fs.noteon(0, 60, 30)
-fs.noteon(0, 67, 30)
-fs.noteon(0, 76, 30)
-
-time.sleep(1.0)
-
-fs.noteoff(0, 60)
-fs.noteoff(0, 67)
-fs.noteoff(0, 76)
-
-time.sleep(1.0)
-
-# fs.delete()
 
 # def TimestampMillisec64(c):
 # 	# print(datetime.datetime.utcnow().microsecond)
@@ -114,13 +96,13 @@ def checkSongEnd():
 	if playstate:
 		now = datetime.datetime.utcnow()
 		# print((miditimecurrentnote - miditimelastnote).total_seconds())
-		if ((now - miditimelastnote).total_seconds() > 3):
+		if ((now - miditimelastnote).total_seconds() > maxsilencetime):
 			playstate = False
 			# printer.closePrinter()
 			print("stopping song, the silence was too long")
 			print("linefeed")
 			songtext.getnewsongtext()
-		if ((now - miditimesongstart).total_seconds() > 10):
+		if ((now - miditimesongstart).total_seconds() > maxsonglength):
 			playstate = False
 			# printer.closePrinter()
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
@@ -145,9 +127,10 @@ def dostuff(msg):
 			miditimelastnote = now
 			miditimesongstart = now
 		miditimecurrentnote = now
-		printwordonline()
+		if (speak.talking == False): 
+			printwordonline()
 	if (msg.type == 'note_off'):
-		fs.noteon(0, msg.note)
+		fs.noteon(0, msg.note, msg.velocity)
 	try:
 		addToSeqs(msg.note, msg.velocity, msg.type, (now - miditimesongstart))
 	except AttributeError:

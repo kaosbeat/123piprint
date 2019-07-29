@@ -1,6 +1,7 @@
 import pyttsx3
-
 import ctypes
+talking False
+
 
 ERROR_HANDLER_FUNC = ctypes.CFUNCTYPE(None, ctypes.c_char_p, ctypes.c_int,
                                       ctypes.c_char_p, ctypes.c_int,
@@ -27,14 +28,23 @@ engine = speake3.Speake() # Initialize the speake engine
 engine.set('voice', 'en')
 engine.set('speed', '250')
 engine.set('pitch', '99')
+# engine.connect('started-utterance', onStart)
+engine.connect('finished-utterance', onEnd)
+
 # engine.say("Hello world!") #String to be spoken
 
+def onEnd():
+    global talking
+    talking False
+    print "Talking Stopped"
 
 
 def sayword(word):
     global engine
-    # engine.say(word)
-    # engine.runAndWait()
+    global talking
+    talking True
+    engine.say(word)
+    engine.runAndWait()
     engine.talkback()
 
 
