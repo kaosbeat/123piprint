@@ -7,7 +7,37 @@ import datetime
 from weatherstuff import getweather 
 import filestuff
 currentsongtext = []
+currentprint = []
 import string
+import subprocess
+import threading
+import musicconcepts as mc
+
+virtualprint = True
+tweeting = True
+
+banner = """ 
+       ________________________________________________________  
+      /                                                       /|
+     /_______________________________________________________/ |
+    |                                                       |  |
+    |                                                       |  |
+    |   _   _       _   _   _       _   _       _   _   _   |  /
+    |__//|_//|_____//|_//|_//|_____//|_//|_____//|_//|_//|__| /|
+   /  /// ///  /  /// /// ///  /  /// ///  /  /// /// ///  / / |
+  /  ||/ ||/  /  ||/ ||/ ||/  /  ||/ ||/  /  ||/ ||/ ||/  / /  |
+ /___/___/___/___/___/___/___/___/___/___/___/___/___/___/ /|  |
+ |___|___|___|___|___|___|___|___|___|___|___|___|___|___|/ |  |
+    |                                                       |  |
+    |                    123-PIANO                          |  |
+    |                 []<> kaotec 2019                      | /
+    |_______________________________________________________|/
+"""
+
+endbanner = """
+ @kaosbeat #123piano
+ """
+
 #init objects
 # # feed = ['feed']
 # filestuff.object2File(feed, 'tracery/feed.trace')
@@ -24,20 +54,14 @@ def loadObjectsFromDisk():
 
 
 
-
-
-
 #songtitle vars
-songnumber = 0
-songlocation = "L40"
+
 
 
 def songtitle():
-    global songnumber
     songdate = datetime.datetime.now().strftime("%d %B, %Y, %H:%M")
-    introtext =  "This is song " + str(songnumber) + " performed at " + songlocation  + " on this " + getweather()["temp"] + " day" 
-    
-    return ()
+    introtext =  "This is song " + str(mc.sessionvars["songnumber"]) + " performed at " + mc.sessionvars["songlocation"]  + " on this " + getweather()["temp"] + " day" 
+    return (songdate + " " + introtext)
 
 def updateobject(obj, objtype):
     global confirmedwordlist
@@ -60,7 +84,7 @@ loadObjectsFromDisk()
 def testsentence(sentence):
     fetchandstorewords(sentence, confirmedwordlist)
     taggedsentence = nltk.pos_tag(sentence)
-    print(taggedsentence)
+    # print(taggedsentence)
     # print(taggedsentence)
     newsentence = []
     for word in taggedsentence:
@@ -72,6 +96,20 @@ def testsentence(sentence):
     # print (newsentence)
     return newsentence
 
+def resentence(sentence):
+    fetchandstorewords(sentence, confirmedwordlist)
+    taggedsentence = nltk.pos_tag(sentence)
+    # print(taggedsentence)
+    # print(taggedsentence)
+    newsentence = []
+    for word in taggedsentence:
+        wordlist = getTypeFromAssoc(word[0],word[1])
+        # print("printing new words")
+        # print(wordlist)
+        newsentence.append(random.choice(wordlist))
+    # print("printing new sentence")
+    # print (newsentence)
+    return newsentence
 
 def convertSentenceToTraceobj(tracename, sentence, traceobj):
     trace = ""
@@ -114,21 +152,70 @@ def makeSense(traceobj,tracename):
 
 
 
-def getnewsongtext():
+class getnewsongtextThread(object):
+    """ Get New Songtext
+    Will be run in background
+    """
+
+    def __init__(self, remangle=True):
+        """ 
+        remangle boolean, go fetch new words or not?
+        """
+        self.remangle = remangle
+        thread = threading.Thread(target=self.run, args=())
+        thread.daemon = True                            # Daemonize thread
+        thread.start()                                # Start the execution
+
+    def run(self):
+        getnewsongtext(self.remangle)
+
+def getnewsongtext(remangle):
+    # print("newsongtext called")
     global sentences
     global sentence
     global currentsongtext
-
+    global currentprint
     sentence = sentences[random.randint(0,len(sentences)-1)]
+    if remangle:
+        sentence = resentence(sentence)
     traceme = {}
     tracename = "test"
     traceme = convertSentenceToTraceobj(tracename, sentence, traceme)
     currentsong = makeSense(traceme,tracename)
-    songtitle()
-    print (currentsong)
-    # print (len(currentsong.split(" ")))
+    # currentprint.append(currentsong)
     currentsongtext = currentsong.split(" ")
-#gletcherobjects
+
+    # for word in currentsongtext:
+
+    currentprint.append('\n')
+    # print (currentsong)
+
+def initSong():
+    global currentprint
+    global banner
+    currentprint = []
+    currentprint.append(songtitle())
+    currentprint.append(banner)
+    getnewsongtextThread(True)
+
+def stopSong():
+    global currentprint
+    global virtualprint
+    global endbanner
+    # print("trying to print to printer")
+    # print(currentprint)
+    filestuff.txt2file(currentprint, "prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
+    currentprint.append(endbanner)
+    if virtualprint:
+        print(currentprint)
+        print("##############################")
+    else:
+        subprocess.run(["lp", "-o", "cpi=24", "-o", "lpi=14" "prints/song" + str(mc.sessionvars["songnumber"]) +".txt"])
+    if tweeting:
+        cattext = subprocess.Popen(('cat', "prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), stdout=subprocess.PIPE)
+        subprocess.check_output(('convert', '-pointsize', '10', '-font', 'Courier', '-fill', 'black', 'text:-',  "prints/song" + str(mc.sessionvars["songnumber"]) +".png"), stdin=cattext.stdout)
+        cattext.wait()
+
 
 sentence = []
 # sentencesources: "https://www.sputnikmusic.com/list.php?memberid=434091&listid=61442"

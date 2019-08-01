@@ -1,9 +1,11 @@
 import datetime
 import time
 import songtext
-
-# import printer
 import speak
+import threading
+import filestuff
+# import printer
+
 miditimesongstart = datetime.datetime.utcnow()
 miditimelastnote = datetime.datetime.utcnow()
 miditimecurrentnote = datetime.datetime.utcnow()
@@ -20,9 +22,11 @@ level = ""
 model = {}
 playstate = False
 cursor = 0
-maxsilencetime = 3
-maxsonglength = 10
 
+# sessionvars = { "songnumber": 0, "songlocation": "L40", "maxsilencetime": 3, "maxsonglength": 10}
+# object2File(sessionvars, "session.store")
+sessionvars = filestuff.file2Object("session.store")
+print(sessionvars)
 
 # def TimestampMillisec64(c):
 # 	# print(datetime.datetime.utcnow().microsecond)
@@ -42,7 +46,9 @@ def resetSeqs():
 	global seqDeltaOn
 	global seqDeltaOff
 	global playstate
-	songtext.songnumber = songtext.songnumber + 1
+	global sessionvars
+	sessionvars["songnumber"] = sessionvars["songnumber"] + 1
+	filestuff.object2File(sessionvars, "session.store")
 	seqNotes =  []
 	seqNotesOn =  []
 	seqNotesOff =  []
@@ -50,10 +56,17 @@ def resetSeqs():
 	seqVelocityOff = []
 	seqDeltaOn = []
 	seqDeltaOff = []
-	print(songtext.songtitle())
+	# print(songtext.songtitle())
 	
 
 def addToSeqs (note, velocity, msgtype, delta):
+	global seqNotes
+	global seqNotesOn
+	global seqNotesOff
+	global seqVelocityOn
+	global seqVelocityOff
+	global seqDeltaOn
+	global seqDeltaOff
 	if (msgtype == 'note_on'):
 		seqNotes.append(note)
 		seqNotesOn.append(note)
@@ -68,6 +81,7 @@ def addToSeqs (note, velocity, msgtype, delta):
 
 	
 def calcStyle():
+	global seqNotesOn
 	if (seqNotesOn.length > 2):
 		print (seqNotesOn[seqNotesOn.length-1], seqNotesOn[seqNotesOn.length-2])
 		if (seqNotesOn[seqNotesOn.length-1] == seqNotesOn[seqNotesOn.length-2]):
@@ -93,22 +107,17 @@ def checkSongEnd():
 	global miditimelastnote
 	global miditimecurrentnote
 	global playstate
+	global sessionvars
 	if playstate:
 		now = datetime.datetime.utcnow()
-		# print((miditimecurrentnote - miditimelastnote).total_seconds())
-		if ((now - miditimelastnote).total_seconds() > maxsilencetime):
+		if ((now - miditimelastnote).total_seconds() > sessionvars["maxsilencetime"]):
 			playstate = False
-			# printer.closePrinter()
 			print("stopping song, the silence was too long")
-			print("linefeed")
-			songtext.getnewsongtext()
-		if ((now - miditimesongstart).total_seconds() > maxsonglength):
+			songtext.stopSong()
+		if ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
 			playstate = False
-			# printer.closePrinter()
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
-			print("linefeed")
-			songtext.getnewsongtext()
-
+			songtext.stopSong()
 
 def dostuff(msg):
 	global miditimesongstart
@@ -117,52 +126,66 @@ def dostuff(msg):
 	global playstate
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
-		fs.noteon(0, msg.note, msg.velocity)
+		# print(msg)
 		if playstate:
 			miditimelastnote = miditimecurrentnote
 		else: 
 			playstate = True
-			# printer.openPrinter()
 			resetSeqs()
 			miditimelastnote = now
 			miditimesongstart = now
+			songtext.initSong()
 		miditimecurrentnote = now
-		if (speak.talking == False): 
-			printwordonline()
-	if (msg.type == 'note_off'):
-		fs.noteon(0, msg.note, msg.velocity)
+		if (speak.talking == 0): 
+			jibberThread()
+	# if (msg.type == 'note_off'):
+	# 	# fs.noteon(0, msg.note, msg.velocity)
+	# 	pass
 	try:
 		addToSeqs(msg.note, msg.velocity, msg.type, (now - miditimesongstart))
 	except AttributeError:
 		pass
 	# print("callback called")
 	
-	# printer.PrintWord("hello from the piano: " + str(msg.note))
 
-def printwordonline():
-	global cursor
-	try:
-		a = songtext.currentsongtext.pop(0)
-		cursor = cursor + len(a) + 1
-		if (cursor > 80):
+
+class jibberThread(object):
+	""" 
+	Threading get words to say online
+	The run() method will be started 
+	"""
+	
+	def __init__(self):
+		""" Constructor
+		fire and forget
+		"""
+		thread = threading.Thread(target=self.run, args=())
+		thread.daemon = True                            # Daemonize thread
+		thread.start()                                # Start the execution
+
+	def run(self):
+		global cursor
+		global sessionvars
+		sessionvars["charpagewidth"] = 56
+		try:
+			a = songtext.currentsongtext.pop(0)
+			cursor = cursor + len(a) + 1
+			# print ("printwordsonline " + str(a) + "cursor " + str(cursor))
+			if (cursor > sessionvars["charpagewidth"]):
+				cursor = 0
+				songtext.currentprint.append('\n')
+				songtext.currentprint.append(a + " ")
+				speak.ThreadingSpeak(a)
+			else: 
+				songtext.currentprint.append(a + " ")
+				speak.ThreadingSpeak(a)
+
+		except IndexError:
+			# print("indexerror linefeed")
 			cursor = 0
-			# print('linefeed')
-			print(a + " ")
-			# printer.NextLine()
-			# printer.PrintWord(a + " ")
-			speak.sayword(a)
-		else: 
-			print(a + " ")
-			# printer.PrintWord(a + " ")
-			speak.sayword(a)
-
-	except IndexError:
-		print("linefeed")
-		# printer.NextLine()
-		cursor = 0
-		songtext.getnewsongtext()
-		a = songtext.currentsongtext.pop(0)
-		# print(a + " ")
-		# printer.PrintWord(a + " ")
-		speak.sayword(a)
-		cursor = cursor + len(a) + 1
+			songtext.getnewsongtext(False)
+			a = songtext.currentsongtext.pop(0)
+			songtext.currentprint.append('\n')
+			songtext.currentprint.append(a + " ")
+			speak.ThreadingSpeak(a)
+			cursor = cursor + len(a) + 1

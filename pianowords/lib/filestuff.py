@@ -3,7 +3,6 @@ from slugify import slugify
 import pickle
 import os
 
-
 def object2File(obj, filename):
 	f=open(filename.encode('utf-8'), 'wb')
 	# f=open(filename.decode("ascii", "ignore"), 'wb')
@@ -56,3 +55,10 @@ def cleanFilename(filename):
 	else:
 		clean_filename = 'none' # only unclean characters
 	return clean_filename
+
+def txt2file(txt, filename):
+	import songtext
+	f=open(filename.encode('utf-8'), 'w+')
+	for line in songtext.currentprint:
+		f.write(line)
+	f.close()

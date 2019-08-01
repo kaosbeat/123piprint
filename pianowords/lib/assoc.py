@@ -47,16 +47,6 @@ def getAssociations(word,associations):
 
 	else:
 		print(response['result_msg'])
-	
-	# if word in associations:
-	# 		print ("the score for " + word + " = " )
-	# 		print (associations[word][unicode])])
-
-# def dump2file(object, filename):
-# 	f=open(filename, 'wb')
-# 	pickle.dump(object, f)
-# 	f.close()
-
 
 
 
