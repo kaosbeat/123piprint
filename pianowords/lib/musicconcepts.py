@@ -22,10 +22,17 @@ level = ""
 model = {}
 playstate = False
 cursor = 0
+speakerpitch = 50
 
 # sessionvars = { "songnumber": 0, "songlocation": "L40", "maxsilencetime": 3, "maxsonglength": 10}
 # object2File(sessionvars, "session.store")
 sessionvars = filestuff.file2Object("session.store")
+sessionvars['minsonglength'] = 20 #should alway be bigger then maxsilencetime
+sessionvars['maxsonglength'] = 300
+sessionvars['maxsilencetime'] = 10
+sessionvars["charpagewidth"] = 56
+filestuff.object2File(sessionvars, "session.store")
+
 print(sessionvars)
 
 # def TimestampMillisec64(c):
@@ -47,8 +54,6 @@ def resetSeqs():
 	global seqDeltaOff
 	global playstate
 	global sessionvars
-	sessionvars["songnumber"] = sessionvars["songnumber"] + 1
-	filestuff.object2File(sessionvars, "session.store")
 	seqNotes =  []
 	seqNotesOn =  []
 	seqNotesOff =  []
@@ -111,9 +116,15 @@ def checkSongEnd():
 	if playstate:
 		now = datetime.datetime.utcnow()
 		if ((now - miditimelastnote).total_seconds() > sessionvars["maxsilencetime"]):
-			playstate = False
-			print("stopping song, the silence was too long")
-			songtext.stopSong()
+			print("silencetime = " + str((now - miditimelastnote).total_seconds()))
+			if ((now - miditimesongstart).total_seconds() < sessionvars["minsonglength"]):		
+				playstate = False
+				print("before I print anything, you have to play a little longer...", (now - miditimesongstart).microseconds)
+				# songtext.stopSong()
+			else:
+				playstate = False
+				print("stopping song, the silence was too long")
+				songtext.stopSong()
 		if ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
 			playstate = False
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
@@ -124,16 +135,17 @@ def dostuff(msg):
 	global miditimelastnote
 	global miditimecurrentnote
 	global playstate
+	global speakerpitch
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
-		# print(msg)
+		speakerpitch = msg.note
 		if playstate:
 			miditimelastnote = miditimecurrentnote
 		else: 
-			playstate = True
-			resetSeqs()
+			# resetSeqs()
 			miditimelastnote = now
 			miditimesongstart = now
+			playstate = True
 			songtext.initSong()
 		miditimecurrentnote = now
 		if (speak.talking == 0): 
@@ -166,7 +178,6 @@ class jibberThread(object):
 	def run(self):
 		global cursor
 		global sessionvars
-		sessionvars["charpagewidth"] = 56
 		try:
 			a = songtext.currentsongtext.pop(0)
 			cursor = cursor + len(a) + 1

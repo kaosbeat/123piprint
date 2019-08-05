@@ -5,6 +5,7 @@ import festival
 import ctypes
 talking = 0
 import subprocess
+import musicconcepts as mc
 
 # ttsengine = "festival"
 ttsengine = "espeak"
@@ -58,8 +59,11 @@ if (ttsengine == "espeak"):
 		engine.runAndWait()
 
 def espeak(text: str, pitch: int=50) -> int:
-    """ Use espeak to convert text to speech. """
-    return subprocess.run(['espeak', '-p {pitch}', text]).returncode
+	""" Use espeak to convert text to speech. """
+	print(str(mc.speakerpitch))
+	return subprocess.run(['espeak', '-p', str(mc.speakerpitch), text]).returncode
+   
+
 
 
 

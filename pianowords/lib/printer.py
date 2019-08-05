@@ -92,6 +92,6 @@ def convertTextToPrint():
 
 # convertTextToPrint()
 
-import subprocess
-currentprint = "Hello World"
-subprocess.run(["lp", "-o", "cpi=20", currentprint])
+# import subprocess
+# currentprint = "Hello World"
+# subprocess.run(["lp", "-o", "cpi=20", currentprint])
