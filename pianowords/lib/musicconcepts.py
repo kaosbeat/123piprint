@@ -1,10 +1,9 @@
 import datetime
 import time
 import songtext
-import speak
 import threading
 import filestuff
-# import printer
+import speak
 
 miditimesongstart = datetime.datetime.utcnow()
 miditimelastnote = datetime.datetime.utcnow()
@@ -34,14 +33,6 @@ sessionvars["charpagewidth"] = 56
 filestuff.object2File(sessionvars, "session.store")
 
 print(sessionvars)
-
-# def TimestampMillisec64(c):
-# 	# print(datetime.datetime.utcnow().microsecond)
-# 	# print(miditime.microsecond)
-# 	# return int((datetime.datetime.utcnow() - miditime).total_seconds() * 1000) 
-#     # return int((datetime.datetime.utcnow().microsecond - miditime.microsecond)*1000) 
-# 	return (datetime.datetime.now() - )
-
 
 def resetSeqs():
 	global msgs
@@ -82,7 +73,6 @@ def addToSeqs (note, velocity, msgtype, delta):
 		seqNotesOff.append(note)
 		seqVelocityOff.append(velocity)
 		seqDeltaOff.append(delta)
-	# print (seqNotes) 
 
 	
 def calcStyle():
@@ -118,17 +108,20 @@ def checkSongEnd():
 		if ((now - miditimelastnote).total_seconds() > sessionvars["maxsilencetime"]):
 			print("silencetime = " + str((now - miditimelastnote).total_seconds()))
 			if ((now - miditimesongstart).total_seconds() < sessionvars["minsonglength"]):		
-				playstate = False
 				print("before I print anything, you have to play a little longer...", (now - miditimesongstart).microseconds)
-				# songtext.stopSong()
-			else:
+				speak.ThreadingSpeak("before I print anything, you have to play a little longer...")
 				playstate = False
+			else:
+				
 				print("stopping song, the silence was too long")
+				speak.ThreadingSpeak("thank you so much for playing with me, I think it was inspiring")
 				songtext.stopSong()
+				playstate = False
 		if ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
-			playstate = False
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
 			songtext.stopSong()
+			playstate = False
+
 
 def dostuff(msg):
 	global miditimesongstart
@@ -200,3 +193,5 @@ class jibberThread(object):
 			songtext.currentprint.append(a + " ")
 			speak.ThreadingSpeak(a)
 			cursor = cursor + len(a) + 1
+
+

@@ -1,5 +1,4 @@
 import tracery
-import songtext
 from assoc import *
 import random
 from tracery.modifiers import base_english
@@ -15,9 +14,9 @@ import musicconcepts as mc
 import twitterstuff
 import math
 virtualprint = True
-# virtualprint = False
+virtualprint = False
 tweeting = True
-# tweeting = False
+tweeting = False
 banner = """ 
        ________________________________________________________  
       /                                                       /|
@@ -88,31 +87,18 @@ loadObjectsFromDisk()
 def testsentence(sentence):
 	fetchandstorewords(sentence, confirmedwordlist)
 	taggedsentence = nltk.pos_tag(sentence)
-	# print(taggedsentence)
-	# print(taggedsentence)
 	newsentence = []
 	for word in taggedsentence:
 		wordlist = getTypeFromAssoc(word[0],word[1])
-		# print("printing new words")
-		# print(wordlist)
 		newsentence.append(random.choice(wordlist))
-	# print("printing new sentence")
-	# print (newsentence)
 	return newsentence
 
 def resentence(sentence):
 	fetchandstorewords(sentence, confirmedwordlist)
 	taggedsentence = nltk.pos_tag(sentence)
-	# print(taggedsentence)
-	# print(taggedsentence)
 	newsentence = []
 	for word in taggedsentence:
 		wordlist = getTypeFromAssoc(word[0],word[1])
-		# print("printing new words")
-		# print(wordlist)
-		newsentence.append(random.choice(wordlist))
-	# print("printing new sentence")
-	# print (newsentence)
 	return newsentence
 
 def convertSentenceToTraceobj(tracename, sentence, traceobj):
@@ -186,13 +172,8 @@ def getnewsongtext(remangle):
 	tracename = "test"
 	traceme = convertSentenceToTraceobj(tracename, sentence, traceme)
 	currentsong = makeSense(traceme,tracename)
-	# currentprint.append(currentsong)
 	currentsongtext = currentsong.split(" ")
-
-	# for word in currentsongtext:
-
 	currentprint.append('\n')
-	# print (currentsong)
 
 def initSong():
 	global currentprint
@@ -214,33 +195,28 @@ def linesLength(filename):
 def virtualPrintFile(file):
 	with open(file) as f:
 		for i, l in enumerate(f):
-			print(l)
+			print(l.rstrip())
 
 def stopSong():
 	global currentprint
 	global virtualprint
 	global endbanner
-	# print("trying to print to printer")
-	# print(currentprint)
 	currentprint.append(endbanner)
 	filestuff.txt2file(currentprint, "prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 	
 	if virtualprint == True:
-		# print(currentprint)
-		# print("##############################")
 		virtualPrintFile("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 	else:
 		print("calling printer")
 	#    print(subprocess.Popen(["pwd"])
 #        proc = sp.Popen(('lp -o cpi=24 -o lpi=14 prints/song86.txt'), shell=True, stdout=sp.PIPE )
-		printstuff = subprocess.Popen(("lp -o cpi=24 -o lpi=14 prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), shell=True, stdout=subprocess.PIPE)
+		subprocess.Popen(("lp -o cpi=24 -o lpi=14 prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), shell=True, stdout=subprocess.PIPE)
 		#proc = subprocess.Popen('lp -o cpi=24 -o lpi=14 prints/song86.txt', shell=True, stdout=supprocess.PIPE )
 	if tweeting:
-
 		countlines = linesLength("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 		print(str(countlines*7))
 		cattext = subprocess.Popen(('cat', "prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), stdout=subprocess.PIPE)
-		subprocess.check_output(('convert', '-pointsize', '10', '-font', 'Courier', '-page', '500x'+str(countlines*8), '-fill', 'black', 'text:-',  "prints/song" + str(mc.sessionvars["songnumber"]) +".png"), stdin=cattext.stdout)
+		subprocess.check_output(('convert', '-pointsize', '10', '-font', 'Courier', '-page', '500x'+str(countlines*9), '-fill', 'black', 'text:-',  "prints/song" + str(mc.sessionvars["songnumber"]) +".png"), stdin=cattext.stdout)
 		cattext.wait()
 		twitterstuff.tweetsong("prints/song" + str(mc.sessionvars["songnumber"]) +".png")
 
