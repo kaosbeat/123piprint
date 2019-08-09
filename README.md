@@ -1,7 +1,7 @@
 # 123piprint
 
-##prep system
-install a clean raspbian lite (
+## prep system
+install a clean raspbian lite
 - not debian buster based in this case, espeak gives major problems
 - I used 2018-10-09-raspbian-stretch-lite.zip
 ```
@@ -10,7 +10,7 @@ sudo raspi-config
 - enable ssh
 - reboot 
 ```
-##install dependencies
+## install dependencies
 ```
 sudo apt-get install git
 sudo apt-get install espeak
@@ -50,7 +50,7 @@ consumer_secret =""
 access_token =""
 access_token_secret =""
 ```
-##install system service
+## install system service
 ### service installation
 
 
