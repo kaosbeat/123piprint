@@ -117,7 +117,7 @@ def checkSongEnd():
 				speak.ThreadingSpeak("thank you so much for playing with me, I think it was inspiring")
 				songtext.stopSong()
 				playstate = False
-		if ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
+		elif ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
 			songtext.stopSong()
 			playstate = False

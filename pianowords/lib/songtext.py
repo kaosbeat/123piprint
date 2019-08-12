@@ -13,6 +13,15 @@ import threading
 import musicconcepts as mc
 import twitterstuff
 import math
+
+
+songs = {}
+# filestuff.object2File(songs,"songs.store")
+songs = filestuff.file2Object("songs.store")
+# for item in songs:
+# 	print(item.encode('utf-8'))
+
+
 virtualprint = True
 virtualprint = False
 tweeting = True
@@ -99,6 +108,7 @@ def resentence(sentence):
 	newsentence = []
 	for word in taggedsentence:
 		wordlist = getTypeFromAssoc(word[0],word[1])
+		newsentence.append(random.choice(wordlist))
 	return newsentence
 
 def convertSentenceToTraceobj(tracename, sentence, traceobj):
@@ -184,6 +194,8 @@ def initSong():
 	currentprint.append(songtitle())
 	currentprint.append(banner)
 	getnewsongtextThread(True)
+	twitterstuff.ThreadingLookForTweets()
+
 
 def linesLength(filename):
 	lines = 0
@@ -208,10 +220,7 @@ def stopSong():
 		virtualPrintFile("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 	else:
 		print("calling printer")
-	#    print(subprocess.Popen(["pwd"])
-#        proc = sp.Popen(('lp -o cpi=24 -o lpi=14 prints/song86.txt'), shell=True, stdout=sp.PIPE )
 		subprocess.Popen(("lp -o cpi=24 -o lpi=14 prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), shell=True, stdout=subprocess.PIPE)
-		#proc = subprocess.Popen('lp -o cpi=24 -o lpi=14 prints/song86.txt', shell=True, stdout=supprocess.PIPE )
 	if tweeting:
 		countlines = linesLength("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 		print(str(countlines*7))
@@ -251,5 +260,7 @@ sentences = [
 			 ['Your', 'prison', 'is', 'walking', 'through', 'this', 'world', 'all', 'alone.'],
 			 ['If', 'you', 'believe', 'in', 'forever,', 'then', 'life', 'is', 'just', 'a', 'one', 'night', 'stand']
 			]
-
+# sentences = [['We', 'need', 'more', 'space', 'in', 'the', 'cosmos'],
+# 			 ['the', 'aids', 'of', 'space']
+# 			 ]
 

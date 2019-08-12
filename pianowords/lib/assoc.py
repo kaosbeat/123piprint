@@ -65,6 +65,7 @@ def fetchandstorewords(wordlist, confirmedwordlist):
 		word = word.split(".")[0]
 		word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)
 		word = word.lower()
+		word = word.encode('ascii', 'ignore')
 		# word.translate(None, '!@#$"`~%^&*()_+-}]{[|?/.,><;:\'')
 		# check associations
 		word = cleanFilename(word)
@@ -109,6 +110,8 @@ def getTypeFromAssoc(word,wordtype):
 	word = word.split(".")[0]
 	word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)
 	word = word.lower()
+	word = word.encode('ascii', 'ignore')
+	word = cleanFilename(word)
 	# print (associations[word])
 	if (associations[word] != None):
 		for w in associations[word]:
