@@ -10,10 +10,10 @@ def remove_non_ascii(text):
 
 songs = filestuff.file2Object("songs.store")
 hashtags = ["123piano", "inspiration"]
-# for item in songs:
-#     for word in songs[item]["text"]:
-#         if word not in hashtags:
-#             print(word.encode("utf-8"))
+for item in songs:
+    for word in songs[item]["text"]:
+        if word in hashtags:
+            print(word.encode("utf-8"))
 
 
 
@@ -35,4 +35,4 @@ def cleanSongs(hashtags):
     filestuff.object2File(songs, "songs.store")
 
 
-cleanSongs(["123piano", "inspiration"])
+# cleanSongs(["123piano", "inspiration"])
