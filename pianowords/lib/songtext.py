@@ -267,8 +267,9 @@ sentences = [
 			]
 # sentences = [['We', 'need', 'more', 'space', 'in', 'the', 'cosmos'],
 # 			 ['the', 'aids', 'of', 'space']
-# 			 ]
+# 		 ]
 
+sentences = []
 songs = {}
 # filestuff.object2File(songs,"songs.store")
 songs = filestuff.file2Object("songs.store")
