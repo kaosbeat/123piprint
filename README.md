@@ -35,7 +35,7 @@ make install
 ```
 git clone https://github.com/kaosbeat/123piprint.git
 sudo apt install python3-pip
-pip3 install python-slugify mido nltk tracery tweepy python-rtmidi pyowm
+pip3 install python-slugify mido nltk tracery tweepy python-rtmidi pyowm sh
 ```
 ## make the authkeys.py file (not in git)
 touch lib/authkeys.py
@@ -52,6 +52,12 @@ access_token_secret =""
 ```
 ## install system service
 ### service installation
+
+## system git config
+- gen sshkey > https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+- add to github . > https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account
+-set new remote 
+```git remote set-url origin $(git remote show origin | grep "Fetch URL" | sed 's/ *Fetch URL: //' | sed 's/https:\/\/github.com\//git@github.com:/')```
 
 
 
