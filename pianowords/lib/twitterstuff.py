@@ -8,7 +8,6 @@ import filestuff
 import threading
 import subprocess
 import shlex
-import sh
 
 # tweetvars = {}
 # tweetvars['sinceID'] = 1158415586206113792 #should alway be bigger then maxsilencetime
@@ -52,7 +51,7 @@ def lookfornewtexts():
 	# remove the line below to activate real storing etc
 	# tweetvars["sinceID"] = 1158415586206113792
 	filestuff.object2File(tweetvars, "tweet.store")
-	subprocess.call(shlex.split('./commitandpush.sh '+ str(tweetvars["sinceID"])))
+	subprocess.call(shlex.split('./commit.sh '+ str(tweetvars["sinceID"])))
 	
 def parseTweetToSongText(tweet, hashtags):
 	# song = '05 August, 2019, 17:43 This is song 347 performed at L40 on this hot day #123piano @kaosbeat https://t.co/hPJPjufSGq'
