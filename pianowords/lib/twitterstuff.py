@@ -57,8 +57,9 @@ def lookfornewtexts():
 	# tweetvars["sinceID"] = 1158415586206113792
 	filestuff.object2File(tweetvars, "tweet.store")
 	git = sh.git.bake(_cwd='/home/pi/123piprint')
-	print(git.commit( m="new " +str(tweetvars["sinceID"]) ))
-	git.pull()
+	git.add("*")
+	git.commit( m="new " +str(tweetvars["sinceID"]) )
+	git.pull("--commit")
 	git.push()
 
 def parseTweetToSongText(tweet, hashtags):
