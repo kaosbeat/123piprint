@@ -36,10 +36,11 @@ def tweetsong(image_path):
 
 def lookfornewtexts():
 	global tweetvars
-	search = tweepy.Cursor(api.search, q="#123piano #inspiration", since_id=tweetvars["sinceID"], lang="en").items(50)
+	search = tweepy.Cursor(api.search, q="#123piano #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
 	for item in search:
+		print(item.entities)
 		print(api.get_user(item.user.id).screen_name)
-		text = parseTweetToSongText(item.text, item.entities['hashtags'])
+		text = parseTweetToSongText(item.full_text, item.entities['hashtags'])
 		user = api.get_user(item.user.id).screen_name
 		print(item.id)
 		if (item.id > tweetvars["sinceID"]):
@@ -87,7 +88,8 @@ def tweetReply(id):
 	for word in newsentence:
 		flatsentence = flatsentence + word + " "
 	# print(flatsentence)
-	reply = "thanks a lot for inspiring me @" + songtext.songs[id]["user"] + " if you play, it might sound like: " + flatsentence
+	reply = "thanks for inspiring me @" + songtext.songs[id]["user"] + ": " + flatsentence
+	reply = reply[:240]
 	api.update_status(status=reply, in_reply_to_status_id=id)
 	print(reply)
 	return reply

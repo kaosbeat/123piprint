@@ -5,7 +5,7 @@ from unidecode import unidecode
 
 
 def remove_non_ascii(text):
-    return unidecode(unicode(text, encoding = "utf-8"))
+    return unidecode(str(text))
 
 
 songs = filestuff.file2Object("songs.store")
@@ -29,10 +29,10 @@ def cleanSongs(hashtags):
 
         songs[item]["text"] = resong
     
-    # for item in songs:
-    #     for word in songs[item]["text"]:
-    #          print(word.encode("utf-8"))
+    for item in songs:
+        for word in songs[item]["text"]:
+             print(word.encode("utf-8"))
     filestuff.object2File(songs, "songs.store")
 
 
-# cleanSongs(["123piano", "inspiration"])
+cleanSongs(["123piano", "inspiration"])
