@@ -3,13 +3,15 @@ Description=piano speaking service
 After=network.target auditd.service
 
 [Service]
-ExecStart=/home/pi/123piprint/pianowords/123piano.sh
-ExecReload=/bin/kill -HUP $MAINPID
+WorkingDirectory=/home/pi/123piprint/pianowords/
+ExecStartPre=/home/pi/123piprint/pianowords/123piano.sh
+ExecStart=/usr/bin/python3 /home/pi/123piprint/pianowords/main.py
+#ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process
 Restart=on-failure
 RestartPreventExitStatus=255
 Type=simple
 User=pi
 
-[Install]
-WantedBy=multi-user.target
+#[Install]
+#WantedBy=multi-user.target
