@@ -35,7 +35,7 @@ make install
 ```
 git clone https://github.com/kaosbeat/123piprint.git
 sudo apt install python3-pip
-pip3 install python-slugify mido nltk tracery tweepy python-rtmidi pyowm sh
+pip3 install python-slugify mido nltk tracery tweepy python-rtmidi pyowm sh unidecode
 ```
 ## make the authkeys.py file (not in git)
 touch lib/authkeys.py
