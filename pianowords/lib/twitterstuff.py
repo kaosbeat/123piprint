@@ -6,8 +6,7 @@ import authkeys
 import re
 import filestuff
 import threading
-from shutil import copyfile
-# copyfile(src, dst)
+import sh
 
 # tweetvars = {}
 # tweetvars['sinceID'] = 1158415586206113792 #should alway be bigger then maxsilencetime
@@ -45,6 +44,10 @@ def lookfornewtexts():
 			tweetvars["sinceID"] =  item.id
 		storenewsongtext(text, user, tweetvars["sinceID"])
 		print("storing text")
+		#"now do git commit?"
+		# add a file
+		# print repo.git.add( 'somefile' )
+		# print(git.commit( m="the sinceID = " +str(tweetvars["sinceID"]) ))
 		# print(text.encode('utf-8'))
 		tweetReply(tweetvars["sinceID"] )
 		# for w in stuff:
@@ -53,7 +56,10 @@ def lookfornewtexts():
 	# remove the line below to activate real storing etc
 	# tweetvars["sinceID"] = 1158415586206113792
 	filestuff.object2File(tweetvars, "tweet.store")
-
+	git = sh.git.bake(_cwd='/home/pi/123piprint')
+	print(git.commit( m="new " +str(tweetvars["sinceID"]) ))
+	git.pull()
+	git.push()
 
 def parseTweetToSongText(tweet, hashtags):
 	# song = '05 August, 2019, 17:43 This is song 347 performed at L40 on this hot day #123piano @kaosbeat https://t.co/hPJPjufSGq'
