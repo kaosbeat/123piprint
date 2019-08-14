@@ -23,9 +23,9 @@ songs = filestuff.file2Object("songs.store")
 
 
 virtualprint = True
-virtualprint = False
+# virtualprint = False
 tweeting = True
-tweeting = False
+# tweeting = False
 banner = """ 
        ________________________________________________________  
       /                                                       /|

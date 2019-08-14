@@ -27,7 +27,7 @@ api = tweepy.API(auth)
 def tweetsong(image_path):
 # to attach the media file 
 #status = 
-	tweet = "testing"
+	tweet = songtext.songtitle()
 	api.update_with_media(image_path, tweet)  
 # api.update_status(status = tweet) 
 
