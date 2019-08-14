@@ -6,6 +6,8 @@ import authkeys
 import re
 import filestuff
 import threading
+import subprocess
+import shlex
 import sh
 
 # tweetvars = {}
@@ -56,12 +58,17 @@ def lookfornewtexts():
 	# remove the line below to activate real storing etc
 	# tweetvars["sinceID"] = 1158415586206113792
 	filestuff.object2File(tweetvars, "tweet.store")
-	git = sh.git.bake(_cwd='/home/pi/123piprint')
-	git.add("*")
-	git.commit( m="new " +str(tweetvars["sinceID"]) )
-	git.pull("--commit")
-	git.push()
-
+	# sh.ssh_agent("-s")
+	# sh.ssh_add ("~/.ssh/piano.id_rsa")
+	# sh.git.bake(_cwd='/home/pi/123piprint')
+	# sh.git.add("*")
+	# sh.git.commit( m="new " +str(tweetvars["sinceID"]) )
+	# sh.git.pull("--commit")
+	# sh.git.push()
+	# print(sh.pwd)
+	# sh.())
+	subprocess.call(shlex.split('./commitandpush.sh '+ str(tweetvars["sinceID"])))
+	
 def parseTweetToSongText(tweet, hashtags):
 	# song = '05 August, 2019, 17:43 This is song 347 performed at L40 on this hot day #123piano @kaosbeat https://t.co/hPJPjufSGq'
 	# song = re.sub(r'^https?:\/\/.*[\r\n]*', '', tweet, flags=re.MULTILINE)
