@@ -46,27 +46,11 @@ def lookfornewtexts():
 			tweetvars["sinceID"] =  item.id
 		storenewsongtext(text, user, tweetvars["sinceID"])
 		print("storing text")
-		#"now do git commit?"
-		# add a file
-		# print repo.git.add( 'somefile' )
-		# print(git.commit( m="the sinceID = " +str(tweetvars["sinceID"]) ))
-		# print(text.encode('utf-8'))
 		tweetReply(tweetvars["sinceID"] )
-		# for w in stuff:
-			# print(w.encode('utf-8'))
 	#store updates back to the object
 	# remove the line below to activate real storing etc
 	# tweetvars["sinceID"] = 1158415586206113792
 	filestuff.object2File(tweetvars, "tweet.store")
-	# sh.ssh_agent("-s")
-	# sh.ssh_add ("~/.ssh/piano.id_rsa")
-	# sh.git.bake(_cwd='/home/pi/123piprint')
-	# sh.git.add("*")
-	# sh.git.commit( m="new " +str(tweetvars["sinceID"]) )
-	# sh.git.pull("--commit")
-	# sh.git.push()
-	# print(sh.pwd)
-	# sh.())
 	subprocess.call(shlex.split('./commitandpush.sh '+ str(tweetvars["sinceID"])))
 	
 def parseTweetToSongText(tweet, hashtags):
