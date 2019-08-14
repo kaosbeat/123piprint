@@ -199,7 +199,7 @@ def initSong():
 	if (voicerandom > 0.9):
 		mc.voice = "-ven-us+f1 -s150"
 	else: 
-		mc.voice = "-ven-us+m3 -s70"
+		mc.voice = "-ven-us+f3 -s70"
 
 
 def linesLength(filename):
