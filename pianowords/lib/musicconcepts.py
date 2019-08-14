@@ -22,6 +22,7 @@ model = {}
 playstate = False
 cursor = 0
 speakerpitch = 50
+voice = "-ven-us+f1 -s450"
 
 # sessionvars = { "songnumber": 0, "songlocation": "L40", "maxsilencetime": 3, "maxsonglength": 10}
 # object2File(sessionvars, "session.store")

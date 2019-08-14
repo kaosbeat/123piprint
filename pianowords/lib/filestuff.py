@@ -62,3 +62,10 @@ def txt2file(txt, filename):
 	for line in songtext.currentprint:
 		f.write(line)
 	f.close()
+
+
+def updateobjectcount():
+	path, dirs, files = next(os.walk("./objects"))
+	file_count = len(files)
+	mc.sessionvars["wordcount"] = file_count
+	filestuff.object2File(mc.sessionvars, "session.store")

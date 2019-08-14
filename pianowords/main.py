@@ -22,8 +22,7 @@ print("##################################")
 # for x in range(0,10):
 # 	sentence = songtext.testsentence(sentence)
 
-path, dirs, files = next(os.walk("./objects"))
-file_count = len(files)
+
 
 
 
@@ -35,10 +34,10 @@ def sayhello():
 	print("My settings are:")
 	print("maximum songlength: " +str(mc.sessionvars["maxsonglength"]))
 	print("maximum silence in song: " + str(mc.sessionvars["maxsilencetime"]))
-	print("so far I learned "+ str(file_count)+ " words")
+	print("so far I learned "+ str(mc.sessionvars["wordcount"])+ " words")
 
 # assoc.fetchandstorewords(["nourish"], assoc.confirmedwordlist)
-
+songtext.updateobjectcount()
 sayhello()
 
 while True:

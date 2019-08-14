@@ -15,12 +15,6 @@ import twitterstuff
 import math
 
 
-songs = {}
-# filestuff.object2File(songs,"songs.store")
-songs = filestuff.file2Object("songs.store")
-# for item in songs:
-# 	print(item.encode('utf-8'))
-
 
 virtualprint = True
 # virtualprint = False
@@ -68,6 +62,12 @@ def loadObjectsFromDisk():
 
 #songtitle vars
 
+
+def updateobjectcount():
+	path, dirs, files = next(os.walk("./objects"))
+	file_count = len(files)
+	mc.sessionvars["wordcount"] = file_count
+	filestuff.object2File(mc.sessionvars, "session.store")
 
 
 def songtitle():
@@ -195,6 +195,11 @@ def initSong():
 	currentprint.append(banner)
 	getnewsongtextThread(True)
 	twitterstuff.ThreadingLookForTweets()
+	voicerandom = random.random()
+	if (voicerandom > 0.9):
+		mc.voice = "-ven-us+f1 -s150"
+	else: 
+		mc.voice = "-ven-us+m3 -s70"
 
 
 def linesLength(filename):
@@ -264,3 +269,9 @@ sentences = [
 # 			 ['the', 'aids', 'of', 'space']
 # 			 ]
 
+songs = {}
+# filestuff.object2File(songs,"songs.store")
+songs = filestuff.file2Object("songs.store")
+for item in songs:
+	# print(item.encode('utf-8'))
+	sentences.append(songs[item]["text"])
