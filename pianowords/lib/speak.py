@@ -7,7 +7,7 @@ import musicconcepts as mc
 
 def espeak(text: str, pitch: int=50) -> int:
 	""" Use espeak to convert text to speech. """
-	# print(str(mc.speakerpitch))
+	print(str(mc.voice))
 	return subprocess.run(['espeak', '-p', str(mc.speakerpitch), str(mc.voice), text]).returncode
 
 

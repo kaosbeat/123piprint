@@ -197,9 +197,9 @@ def initSong():
 	twitterstuff.ThreadingLookForTweets()
 	voicerandom = random.random()
 	if (voicerandom > 0.9):
-		mc.voice = "-ven-us+f1 -s150"
+		mc.voice = "-ven-us+f1 -s350"
 	else: 
-		mc.voice = "-ven-us+f3 -s70"
+		mc.voice = "-ven-us+f3 -s370"
 
 
 def linesLength(filename):
