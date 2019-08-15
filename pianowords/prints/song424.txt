@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 15 August, 2019, 15:08 This is song 424 performed at L40 on this warm day 
+=======
+14 August, 2019, 22:02 This is song 424 performed at L40 on this chilly day 
+>>>>>>> 37080e8284ceac86af1d0c5ffa9457e3df78eb78
        ________________________________________________________  
       /                                                       /|
      /_______________________________________________________/ |
@@ -15,6 +19,7 @@
     |                 []<> kaotec 2019                      | /
     |_______________________________________________________|/
 
+<<<<<<< HEAD
 landlady a guise 
 position yourself  
 
@@ -37,6 +42,13 @@ illusory considerateness to plot isolated the refract
 
 unbroken cozen and jocose soothe a bachelor gramophone 
 what he fortunate to audio 
+=======
+an 
+truth father his 
+i whish i regain timidity paralyzed  
+
+i would much populate a smith than a blade  
+>>>>>>> 37080e8284ceac86af1d0c5ffa9457e3df78eb78
 
  find the text at twitter @kaoskode @kaosbeat #123piano
  

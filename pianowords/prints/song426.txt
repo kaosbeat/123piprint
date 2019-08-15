@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 15 August, 2019, 22:30 This is song 426 performed at L40 on this chilly day 
+=======
+14 August, 2019, 22:08 This is song 426 performed at L40 on this chilly day 
+>>>>>>> 37080e8284ceac86af1d0c5ffa9457e3df78eb78
        ________________________________________________________  
       /                                                       /|
      /_______________________________________________________/ |
@@ -15,6 +19,7 @@
     |                 []<> kaotec 2019                      | /
     |_______________________________________________________|/
 
+<<<<<<< HEAD
 immersion the windup 
 this inhabit departure to 
 concoct you serpent  
@@ -39,6 +44,15 @@ conserve a cringe that verbosity imitative shrewdness congruent
 a bulldog 123piano delusion  
 
 perfect treacherous and humour though a mankind 
+=======
+upright  
+
+perfectly 
+i whish i rent formidable handicap  
+
+coordination the astute testing if you mull justtrying 
+dontjudgeyet 123piano impetus 
+>>>>>>> 37080e8284ceac86af1d0c5ffa9457e3df78eb78
 
  find the text at twitter @kaoskode @kaosbeat #123piano
  
