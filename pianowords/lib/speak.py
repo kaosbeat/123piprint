@@ -7,8 +7,8 @@ import musicconcepts as mc
 
 def espeak(text: str, pitch: int=50) -> int:
 	""" Use espeak to convert text to speech. """
-	print(str(mc.voice))
-	return subprocess.run(['espeak', '-p', str(mc.speakerpitch), '-v', str(mc.voice), '-s', '120', text]).returncode
+	# print(str(mc.speakerpitch))
+	return subprocess.run(['espeak', '-p', str(mc.speakerpitch), text]).returncode
 
 
 
@@ -25,6 +25,6 @@ class ThreadingSpeak(object):
 
 	def run(self):
 		global talking
-		talking = 0
+		talking = 1
 		talking = espeak(self.word)
 
