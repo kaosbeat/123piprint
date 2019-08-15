@@ -25,6 +25,6 @@ class ThreadingSpeak(object):
 
 	def run(self):
 		global talking
-		talking = 1
+		talking = 0
 		talking = espeak(self.word)
 
