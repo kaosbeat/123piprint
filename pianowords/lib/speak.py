@@ -25,6 +25,9 @@ class ThreadingSpeak(object):
 
 	def run(self):
 		global talking
-		talking = 1
+		if mc.polyvoicy:
+			talking = 0
+		else:
+			talking = 1
 		talking = espeak(self.word)
 

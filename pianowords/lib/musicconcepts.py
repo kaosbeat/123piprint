@@ -25,7 +25,7 @@ speakerpitch = 50
 # voice = "-ven-us+f1 -s450"
 voice = "en-us+f1"
 lastnote = 64
-polyvoicy = 0
+polyvoicy = False
 # sessionvars = { "songnumber": 0, "songlocation": "L40", "maxsilencetime": 3, "maxsonglength": 10}
 # object2File(sessionvars, "session.store")
 sessionvars = filestuff.file2Object("session.store")
@@ -137,12 +137,14 @@ def dostuff(msg):
 	global polyvoicy
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
+		print(msg.note)
 		speakerpitch = msg.note
 		if (msg.note == 96):
 			if lastnote == msg.note:
+				print("lastnoet was a hit")
 				lastnotecount = lastnotecount + 1
 				if lastnotecount > 3:
-					polyvoicy = 1
+					polyvoicy = True
 		else: 
 			lastnotecount = 0
 		lastnote = msg.note
