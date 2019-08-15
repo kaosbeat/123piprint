@@ -24,7 +24,8 @@ cursor = 0
 speakerpitch = 50
 # voice = "-ven-us+f1 -s450"
 voice = "en-us+f1"
-
+lastnote = 64
+polyvoicy = 0
 # sessionvars = { "songnumber": 0, "songlocation": "L40", "maxsilencetime": 3, "maxsonglength": 10}
 # object2File(sessionvars, "session.store")
 sessionvars = filestuff.file2Object("session.store")
@@ -131,9 +132,20 @@ def dostuff(msg):
 	global miditimecurrentnote
 	global playstate
 	global speakerpitch
+	global lastnote
+	global lastnotecount
+	global polyvoicy
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
 		speakerpitch = msg.note
+		if (msg.note == 96):
+			if lastnote == msg.note:
+				lastnotecount = lastnotecount + 1
+				if lastnotecount > 3:
+					polyvoicy = 1
+		else: 
+			lastnotecount = 0
+		lastnote = msg.note
 		if playstate:
 			miditimelastnote = miditimecurrentnote
 		else: 
