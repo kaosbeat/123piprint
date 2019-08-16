@@ -137,11 +137,11 @@ def dostuff(msg):
 	global polyvoicy
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
-		# print(msg.note)
+		print(msg.note)
 		speakerpitch = msg.note
 		if (msg.note == 108):
 			if lastnote == msg.note:
-				# print("lastnoet was a hit")
+				print("lastnoet was a hit")
 				lastnotecount = lastnotecount + 1
 				if lastnotecount > 3:
 					if polyvoicy:
