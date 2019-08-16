@@ -17,7 +17,7 @@ import math
 
 
 virtualprint = True
-# virtualprint = False
+virtualprint = False
 tweeting = True
 # tweeting = False
 banner = """ 
@@ -175,6 +175,7 @@ def getnewsongtext(remangle):
 	global sentence
 	global currentsongtext
 	global currentprint
+	mc.polyvoicy = False
 	sentence = sentences[random.randint(0,len(sentences)-1)]
 	if remangle:
 		sentence = resentence(sentence)
