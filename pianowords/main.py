@@ -36,6 +36,8 @@ def sayhello():
 	print("maximum silence in song: " + str(mc.sessionvars["maxsilencetime"]))
 	print("so far I learned "+ str(mc.sessionvars["wordcount"])+ " words")
 
+
+mc.sessionvars["songlocation"] = "de Krook"
 # assoc.fetchandstorewords(["nourish"], assoc.confirmedwordlist)
 songtext.updateobjectcount()
 sayhello()

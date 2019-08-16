@@ -35,4 +35,4 @@ def cleanSongs(hashtags):
     filestuff.object2File(songs, "songs.store")
 
 
-# cleanSongs(["123piano", "inspiration"])
+cleanSongs(["123piano", "inspiration"])
