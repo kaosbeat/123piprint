@@ -2,5 +2,5 @@
 cd /home/pi/123piprint/pianowords/
 eval $(ssh-agent -s)
 ssh-add ~/.ssh/piano.id_rsa
-git pull --commit
+git pull --commit&
 amixer set Master 100%
