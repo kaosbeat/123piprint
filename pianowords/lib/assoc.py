@@ -40,12 +40,12 @@ def getAssociations(word,associations):
 
 	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	print(word)
-	print(response.text)
+	print(response)
 	
 	# print(response['result_code'])
 	if (response['result_code'] == '200'):
 		# print(response)
-		# print(response['associations_scored'])
+		print(response['associations_scored'])
 		associations.update({word: response['associations_scored']})
 		return True
 	if (response['result_code'] == '462'):

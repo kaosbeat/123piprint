@@ -63,10 +63,10 @@ def parseTweetToSongText(tweet, hashtags):
 	song = song.split()
 	print("unhanshtagremovedsong")
 	print (song)
-	# for tag in hashtags:
-	# 	with suppress(ValueError, AttributeError):
-	# 		print(tag["text"])
-	# 		song = song.remove(tag["text"])
+	for tag in hashtags:
+		with suppress(ValueError, AttributeError):
+			print(tag["text"])
+			song = song.remove(tag["text"])
 	for word in song:
 		word = word.split(".")[0]
 		word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)
