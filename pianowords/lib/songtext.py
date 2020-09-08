@@ -38,10 +38,27 @@ banner = """
     |_______________________________________________________|/
 
 """
+
+
+banner = """
+        ____ 			       	       /|
+       /    \		     n  n  n      / | -_- _- _- _ - _  - _-_- _- _-_
+       | 0,0| ,_________| || || |____/  |            BOT BOP
+ _(\   |   -|/-------//-| || || |____   |      
+(__/\__ \--/ __     ((  | || || |  ))\  |      Ars Electronica 2020
+   \___|[]<>|  |   __\\_|_||_||_|_//  \ | _- _- _-_- _- _--_-_  -_ -_-_-_
+       \    /\ )_ / ______________/    \|
+       /\__/\ \____/
+      (--/\--)    
+      _)(  )(_
+     `---''---`  kaotec 2020
+"""
+
+
 # banner = "###123piano### "
 endbanner = """
 
- find the text at twitter @kaoskode @kaosbeat #123piano
+ find the text at twitter @kaoskode @kaosbeat #prixarselectronic
  """
 
 #init objects
