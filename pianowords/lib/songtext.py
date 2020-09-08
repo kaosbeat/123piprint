@@ -17,9 +17,9 @@ import math
 
 
 virtualprint = True
-virtualprint = False
-tweeting = True
-# tweeting = False
+# virtualprint = False
+# tweeting = True
+tweeting = False
 banner = """ 
        ________________________________________________________  
       /                                                       /|
@@ -291,6 +291,7 @@ sentences = []
 songs = {}
 # filestuff.object2File(songs,"songs.store")
 songs = filestuff.file2Object("songs.store")
+print(songs)
 for item in songs:
 	# print(item.encode('utf-8'))
 	sentences.append(songs[item]["text"])
