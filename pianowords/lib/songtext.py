@@ -18,8 +18,8 @@ import math
 
 virtualprint = True
 # virtualprint = False
-# tweeting = True
-tweeting = False
+tweeting = True
+# tweeting = False
 banner = """ 
        ________________________________________________________  
       /                                                       /|
@@ -58,7 +58,7 @@ banner = """
 # banner = "###123piano### "
 endbanner = """
 
- find the text at twitter @kaoskode @kaosbeat #prixarselectronic
+ find the text at twitter @kaoskode @kaosbeat
  """
 
 #init objects
@@ -238,6 +238,7 @@ def stopSong():
 	global endbanner
 	currentprint.append(endbanner)
 	filestuff.txt2file(currentprint, "prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
+	print(currentprint)
 	
 	if virtualprint == True:
 		virtualPrintFile("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
