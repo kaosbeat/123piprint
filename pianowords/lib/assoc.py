@@ -38,7 +38,7 @@ def getAssociations(word,associations):
     	'x-rapidapi-key': rapidapikey
     }
 
-	response = requests.request("GET", url, headers=headers, params=querystring)
+	response = requests.request("GET", url, headers=headers, params=querystring).json()
 	print(word)
 	print(response.text)
 	
