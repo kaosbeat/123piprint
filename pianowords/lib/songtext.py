@@ -249,7 +249,7 @@ def stopSong():
 		countlines = linesLength("prints/song" + str(mc.sessionvars["songnumber"]) +".txt")
 		print(str(countlines*7))
 		cattext = subprocess.Popen(('cat', "prints/song" + str(mc.sessionvars["songnumber"]) +".txt"), stdout=subprocess.PIPE)
-		subprocess.check_output(('convert', '-pointsize', '10', '-font', 'Courier', '-page', '500x'+str(countlines*9), '-fill', 'black', 'text:-',  "prints/song" + str(mc.sessionvars["songnumber"]) +".png"), stdin=cattext.stdout)
+		subprocess.check_output(('convert', '-pointsize', '10', '-font', 'Courier', '-page', '500x'+str(countlines*10), '-fill', 'black', 'text:-',  "prints/song" + str(mc.sessionvars["songnumber"]) +".png"), stdin=cattext.stdout)
 		cattext.wait()
 		twitterstuff.tweetsong("prints/song" + str(mc.sessionvars["songnumber"]) +".png")
 
