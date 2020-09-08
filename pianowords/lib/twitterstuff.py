@@ -35,7 +35,9 @@ def tweetsong(image_path):
 
 def lookfornewtexts():
 	global tweetvars
-	search = tweepy.Cursor(api.search, q="#123piano #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
+	# search = tweepy.Cursor(api.search, q="#123piano #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
+	search = tweepy.Cursor(api.search, q="#botbop #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
+
 	for item in search:
 		print(item.entities)
 		print(api.get_user(item.user.id).screen_name)
@@ -60,12 +62,11 @@ def parseTweetToSongText(tweet, hashtags):
 	song = re.sub(r"http\S+", "", tweet)
 	song = song.split()
 	print("unhanshtagremovedsong")
-	# print (song,  ,hashtags)
-	for tag in hashtags:
-		with suppress(ValueError, AttributeError):
-			print(tag["text"])
-			song = song.remove(tag["text"])
-
+	print (song)
+	# for tag in hashtags:
+	# 	with suppress(ValueError, AttributeError):
+	# 		print(tag["text"])
+	# 		song = song.remove(tag["text"])
 	for word in song:
 		word = word.split(".")[0]
 		word = re.sub('[!@#$\"`~%^&*()_+\-|?\/.,><;:\']', '', word)

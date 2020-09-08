@@ -4,7 +4,7 @@ import random
 # import string
 import re
 import nltk
-from authkeys import mashapekey
+from authkeys import rapidapikey
 from filestuff import *
 
 
@@ -27,24 +27,31 @@ credits = True
 
 
 def getAssociations(word,associations):
-	r = requests.post("https://twinword-word-associations-v1.p.mashape.com/associations/",
-	  headers={
-	    "X-Mashape-Key": mashapekey,
-	    "Content-Type": "application/x-www-form-urlencoded",
-	    "Accept": "application/json"
-	  },
-	  params={
-	    "entry": word
-	  }
-	)
-	response = r.json()
+
+
+	url = "https://twinword-word-associations-v1.p.rapidapi.com/associations/"
+
+	querystring = {"entry":word}
+
+	headers = {
+    	'x-rapidapi-host': "twinword-word-associations-v1.p.rapidapi.com",
+    	'x-rapidapi-key': rapidapikey
+    }
+
+	response = requests.request("GET", url, headers=headers, params=querystring)
+	print(word)
+	print(response.text)
+	
 	# print(response['result_code'])
 	if (response['result_code'] == '200'):
 		# print(response)
 		# print(response['associations_scored'])
 		associations.update({word: response['associations_scored']})
 		return True
-
+	if (response['result_code'] == '462'):
+		# print(response)
+		# print(response['associations_scored'])
+		print("word " + word + "not found")
 	else:
 		print(response['result_msg'])
 

@@ -31,7 +31,7 @@ polyvoicy = False
 sessionvars = filestuff.file2Object("session.store")
 sessionvars['minsonglength'] = 20 #should alway be bigger then maxsilencetime
 sessionvars['maxsonglength'] = 300
-sessionvars['maxsilencetime'] = 10
+sessionvars['maxsilencetime'] = 2
 sessionvars["charpagewidth"] = 56
 filestuff.object2File(sessionvars, "session.store")
 
@@ -140,14 +140,13 @@ def checkSongEndNoPrintNoSpeak():
 				# speak.ThreadingSpeak("before I print anything, you have to play a little longer...")
 				playstate = False
 			else:
-				
 				print("stopping song, the silence was too long")
-				speak.ThreadingSpeak("thank you so much for playing with me, I think it was inspiring")
-				songtext.stopSong()
+				# speak.ThreadingSpeak("thank you so much for playing with me, I think it was inspiring")
+				songtext.stopSongNoSpeak()
 				playstate = False
 		elif ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
 			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
-			songtext.stopSong()
+			songtext.stopSongNoSpeak()
 			playstate = False
 
 
@@ -162,11 +161,11 @@ def dostuff(msg):
 	global polyvoicy
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on'):
-		print(msg.note)
+		# print(msg.note)
 		speakerpitch = msg.note
 		if (msg.note == 108):
 			if lastnote == msg.note:
-				print("lastnoet was a hit")
+				print("lastnote was a hit")
 				lastnotecount = lastnotecount + 1
 				if lastnotecount > 3:
 					if polyvoicy:
@@ -223,6 +222,7 @@ class jibberThread(object):
 				cursor = 0
 				songtext.currentprint.append('\n')
 				songtext.currentprint.append(a + " ")
+				print(a)
 				speak.ThreadingSpeak(a)
 			else: 
 				songtext.currentprint.append(a + " ")
