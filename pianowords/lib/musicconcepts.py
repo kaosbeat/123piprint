@@ -4,6 +4,9 @@ import songtext
 import threading
 import filestuff
 import speak
+from pyfiglet import Figlet
+global f
+f = Figlet(font='slant')
 
 miditimesongstart = datetime.datetime.utcnow()
 miditimelastnote = datetime.datetime.utcnow()
@@ -224,9 +227,11 @@ class jibberThread(object):
 				songtext.currentprint.append(a + " ")
 				print(a)
 				speak.ThreadingSpeak(a)
+				print (f.renderText(a))
 			else: 
 				songtext.currentprint.append(a + " ")
 				speak.ThreadingSpeak(a)
+				print (f.renderText(a))
 
 		except IndexError:
 			# print("indexerror linefeed")
@@ -236,6 +241,7 @@ class jibberThread(object):
 			songtext.currentprint.append('\n')
 			songtext.currentprint.append(a + " ")
 			speak.ThreadingSpeak(a)
+			print (f.renderText(a))
 			cursor = cursor + len(a) + 1
 
 
