@@ -125,6 +125,31 @@ def checkSongEnd():
 			songtext.stopSong()
 			playstate = False
 
+def checkSongEndNoPrintNoSpeak():
+	global miditimesongstart
+	global miditimelastnote
+	global miditimecurrentnote
+	global playstate
+	global sessionvars
+	if playstate:
+		now = datetime.datetime.utcnow()
+		if ((now - miditimelastnote).total_seconds() > sessionvars["maxsilencetime"]):
+			print("silencetime = " + str((now - miditimelastnote).total_seconds()))
+			if ((now - miditimesongstart).total_seconds() < sessionvars["minsonglength"]):		
+				# print("before I print anything, you have to play a little longer...", (now - miditimesongstart).microseconds)
+				# speak.ThreadingSpeak("before I print anything, you have to play a little longer...")
+				playstate = False
+			else:
+				
+				print("stopping song, the silence was too long")
+				speak.ThreadingSpeak("thank you so much for playing with me, I think it was inspiring")
+				songtext.stopSong()
+				playstate = False
+		elif ((now - miditimesongstart).total_seconds() > sessionvars["maxsonglength"]):
+			print("stopping song, the song has been playing too long", (now - miditimesongstart).microseconds)
+			songtext.stopSong()
+			playstate = False
+
 
 def dostuff(msg):
 	global miditimesongstart
