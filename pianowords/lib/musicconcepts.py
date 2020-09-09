@@ -163,10 +163,10 @@ def dostuff(msg):
 	global lastnotecount
 	global polyvoicy
 	now = datetime.datetime.utcnow()
-	if (msg.type == 'note_on'):
+	if (msg.type == 'note_on' and msg.channel == 15):
 		# print(msg.note)
 		speakerpitch = msg.note
-		if (msg.note == 108):
+		if (msg.note == 22):
 			if lastnote == msg.note:
 				print("lastnote was a hit")
 				lastnotecount = lastnotecount + 1
