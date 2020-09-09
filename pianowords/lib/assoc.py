@@ -11,7 +11,7 @@ from filestuff import *
 wordlist = []
 confirmedwordlist = []
 ### blacklist https://www.reddit.com/r/Twitch/comments/6jdsco/is_there_a_text_file_with_all_the_blacklisted/
-blacklistedwords = ['hitler','nazi','whore']
+blacklistedwords = ['hitler','nazi','whore', 'botbop']
 blacklistfile = open("lib/blacklist.txt", "r")
 
 for word in blacklistfile:

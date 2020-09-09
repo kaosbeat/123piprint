@@ -9,9 +9,9 @@ import threading
 import subprocess
 import shlex
 
-# tweetvars = {}
-# tweetvars['sinceID'] = 1158415586206113792 #should alway be bigger then maxsilencetime
-tweetvars = filestuff.file2Object("tweet.store")
+tweetvars = {}
+tweetvars['sinceID'] = 1158415586206113792 #should alway be bigger then maxsilencetime
+# tweetvars = filestuff.file2Object("tweet.store")
 # filestuff.object2File(songtext.songs, "songs.store")
 # songtext.songs = {}
 
