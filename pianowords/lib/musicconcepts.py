@@ -165,7 +165,8 @@ def dostuff(msg):
 	now = datetime.datetime.utcnow()
 	if (msg.type == 'note_on' and msg.channel == 15):
 		# print(msg.note)
-		speakerpitch = msg.note
+		# speakerpitch = msg.note
+		speakerpitch = 50
 		if (msg.note == 22):
 			if lastnote == msg.note:
 				print("lastnote was a hit")
