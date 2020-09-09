@@ -36,7 +36,7 @@ def tweetsong(image_path):
 def lookfornewtexts():
 	global tweetvars
 	# search = tweepy.Cursor(api.search, q="#123piano #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
-	search = tweepy.Cursor(api.search, q="#botbop #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
+	search = tweepy.Cursor(api.search, q="#botrob #inspiration", since_id=tweetvars["sinceID"], lang="en", tweet_mode='extended').items(50)
 
 	for item in search:
 		print(item.entities)
